@@ -5,6 +5,7 @@
         <li><router-link to ="/">Главная</router-link></li>
         <li><router-link to ="/users">Пользователи</router-link></li>
         <li><router-link to ="/groups">Группы</router-link></li>
+        <li><router-link to ="/friends">Друзья</router-link></li>
       </ul>
       <div v-if="isAuthenticated && user">
         Welcome, {{ user.name }}
