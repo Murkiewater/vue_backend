@@ -1,5 +1,5 @@
 <template>
   <div class="table">
-    <h1>работаеттттт</h1>
+    <h1>группа работаеттттт</h1>
   </div>
 </template>
