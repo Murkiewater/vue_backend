@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -12,7 +13,7 @@ export const useAuthStore = defineStore('auth', {
     async login(credentials) {
       this.errorMessage = "";
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/login', credentials);
+        const response = await axios.post(backend_url + '/login', credentials);
         this.token = response.data.token;
         this.user = response.data.user;
         this.isAuthenticated = true;
