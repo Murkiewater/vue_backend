@@ -1,17 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
     font-family: Arial, serif;
-}
-
-.p-menubar {
-    --p-menubar-gap: 15px;
 }
 .p-menubar-end span.pi.pi-fw.pi-user {
   color: #0ABAB5;
 }
-
 .p-menubar-end button.p-button {
     margin-left: 10px;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+.m-2 {
+  margin: 0;
+}

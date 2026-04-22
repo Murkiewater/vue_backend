@@ -10,16 +10,17 @@ export const useDataStore = defineStore('data', {
         users: [],
         users_total: null,
         items: [],
+        errorCode: "",
         errorMessage: "",
     }),
     actions: {
         async get_groups(page = 0, perpage = 5) {
-            const authStore = useAuthStore();
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/groups', {
                     headers: {
-                        Authorization: 'Bearer ' + authStore.token
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
                     },
                     params: {
                         page: page,
@@ -33,7 +34,7 @@ export const useDataStore = defineStore('data', {
                 if (error.response) {
                     this.errorMessage = error.response.data.message;
                     console.log(error);
-                } else if (error.request) { 
+                } else if (error.request) {
                     this.errorMessage = error.message;
                     console.log(error);
                 } else {
@@ -42,12 +43,12 @@ export const useDataStore = defineStore('data', {
             }
         },
         async get_users(page = 0, perpage = 5) {
-            const authStore = useAuthStore();
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/users', {
                     headers: {
-                        Authorization: 'Bearer ' + authStore.token
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
                     },
                     params: {
                         page: page,
@@ -61,7 +62,7 @@ export const useDataStore = defineStore('data', {
                 if (error.response) {
                     this.errorMessage = error.response.data.message;
                     console.log(error);
-                } else if (error.request) { 
+                } else if (error.request) {
                     this.errorMessage = error.message;
                     console.log(error);
                 } else {
@@ -72,11 +73,11 @@ export const useDataStore = defineStore('data', {
         async get_groups_total() {
             this.errorMessage = "";
             try {
-                const authStore = useAuthStore();
                 const response = await axios.get(backend_url + '/groups_total', {
                     headers: {
-                        Authorization: 'Bearer ' + authStore.token
-                    }
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
                 });
 
                 this.groups_total = response.data;
@@ -84,7 +85,7 @@ export const useDataStore = defineStore('data', {
                 if (error.response) {
                     this.errorMessage = error.response.data.message;
                     console.log(error);
-                } else if (error.request) { 
+                } else if (error.request) {
                     this.errorMessage = error.message;
                     console.log(error);
                 } else {
@@ -95,11 +96,11 @@ export const useDataStore = defineStore('data', {
         async get_users_total() {
             this.errorMessage = "";
             try {
-                const authStore = useAuthStore();
                 const response = await axios.get(backend_url + '/users_total', {
                     headers: {
-                        Authorization: 'Bearer ' + authStore.token
-                    }
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
                 });
 
                 this.users_total = response.data;
@@ -107,10 +108,62 @@ export const useDataStore = defineStore('data', {
                 if (error.response) {
                     this.errorMessage = error.response.data.message;
                     console.log(error);
-                } else if (error.request) { 
+                } else if (error.request) {
                     this.errorMessage = error.message;
                     console.log(error);
                 } else {
+                    console.log(error);
+                }
+            }
+        },
+        async create_group(formData) {
+            this.errorMessage = "";
+            try {
+                const response = await axios.post(backend_url + '/group', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
+                });
+                this.errorCode = response.data.code;
+                this.errorMessage = response.data.message;
+            } catch (error) {
+                if (error.response) {
+                    this.errorCode = 11;
+                    this.errorMessage = error.response.data.message;
+                    console.log(error);
+                } else if (error.request) {
+                    this.errorCode = 12;
+                    this.errorMessage = error.message;
+                    console.log(error);
+                } else {
+                    this.errorCode = 13;
+                    console.log(error);
+                }
+            }
+        },
+        async create_user(formData) {
+            this.errorMessage = "";
+            try {
+                const response = await axios.post(backend_url + '/user', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
+                });
+                this.errorCode = response.data.code;
+                this.errorMessage = response.data.message;
+            } catch (error) {
+                if (error.response) {
+                    this.errorCode = 11;
+                    this.errorMessage = error.response.data.message;
+                    console.log(error);
+                } else if (error.request) {
+                    this.errorCode = 12;
+                    this.errorMessage = error.message;
+                    console.log(error);
+                } else {
+                    this.errorCode = 13;
                     console.log(error);
                 }
             }

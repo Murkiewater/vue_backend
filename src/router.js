@@ -3,6 +3,7 @@ import Home from '@/components/Home.vue';
 import Friends from '@/components/Friends.vue';
 import Groups from '@/components/Groups.vue';
 import Users from '@/components/Users.vue';
+import CreateGroup from '@/components/CreateGroup.vue';
 const routes = [
     {
         path: '/',
@@ -19,6 +20,10 @@ const routes = [
     {
         path: '/friends',
         component: Friends,
+    },
+    {
+        path: '/createGroup',
+        component: CreateGroup,
     },
 ];
 

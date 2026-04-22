@@ -11,9 +11,19 @@
     responsive-layout="scroll"
     :leading="true"
     :first="offset"
-  > 
-    <Column field="id" header="№"/> 
-    <Column field="full_name" header="Пользователи"/> 
+  >
+    <Column field="id" header="№"/>
+    <Column field="full_name" header="Пользователи"/>
+    <Column header="Изображение">
+      <template #body="slotProps">
+        <img
+          :src="slotProps.data.picture_url || defaultImage"
+          @error="err => err.target.src = defaultImage"
+          alt="user image"
+          style="width: 100px; height: 100px; border-radius: 6px;"
+        />
+    </template>
+  </Column>
   </DataTable>
 </template>
 
@@ -29,7 +39,9 @@ export default {
     return {
       dataStore: useDataStore(),
       perpage: 5,
+      offset: 0,
       page: 0,
+      defaultImage: 'https://storage.yandexcloud.net/nifty-db/groups_pictures/nifty-default-user.png'
     }
   },
   computed: {
