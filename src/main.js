@@ -2,18 +2,20 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import { createPinia } from 'pinia';
 import router from '@/router.js';
+import { Indigo } from '@/themes/theme.js';
 import PrimeVue from 'primevue/config';
-import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 const app = createApp(App);
-app.use(ToastService);
 app.use(createPinia());
+app.use(ToastService);
+app.use(ConfirmationService);
 app.use(router);
 app.use(PrimeVue, {
     theme: {
-        preset: Aura,
+        preset: Indigo,
         options: {
             prefix: 'p',
             darkModeSelector: 'system',

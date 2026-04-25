@@ -22,7 +22,7 @@ const routes = [
         component: Friends,
     },
     {
-        path: '/createGroup',
+        path: '/createGroup/:id?',
         component: CreateGroup,
     },
 ];

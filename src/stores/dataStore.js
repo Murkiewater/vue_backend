@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useAuthStore } from '@/stores/authStore';
 import axios from 'axios';
 const backend_url = import.meta.env.VITE_BACKEND_URL;
 
@@ -14,7 +13,7 @@ export const useDataStore = defineStore('data', {
         errorMessage: "",
     }),
     actions: {
-        async get_groups(page = 0, perpage = 5) {
+        async get_groups(page = 0, perpage = 5, search = "") {
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/groups', {
@@ -24,7 +23,8 @@ export const useDataStore = defineStore('data', {
                     },
                     params: {
                         page: page,
-                        perpage: perpage
+                        perpage: perpage,
+                        search: search
                     }
                 });
 
@@ -42,7 +42,7 @@ export const useDataStore = defineStore('data', {
                 }
             }
         },
-        async get_users(page = 0, perpage = 5) {
+        async get_users(page = 0, perpage = 5, search = "") {
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/users', {
@@ -52,7 +52,8 @@ export const useDataStore = defineStore('data', {
                     },
                     params: {
                         page: page,
-                        perpage: perpage
+                        perpage: perpage,
+                        search: search
                     }
                 });
 
@@ -70,7 +71,7 @@ export const useDataStore = defineStore('data', {
                 }
             }
         },
-        async get_groups_total() {
+        async get_groups_total(search = "") {
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/groups_total', {
@@ -78,8 +79,10 @@ export const useDataStore = defineStore('data', {
                         'Content-Type': 'multipart/form-data',
                         Authorization: 'Bearer ' + localStorage.getItem('token')
                     },
+                    params: {
+                      search: search
+                    },
                 });
-
                 this.groups_total = response.data;
             } catch (error) {
                 if (error.response) {
@@ -93,13 +96,16 @@ export const useDataStore = defineStore('data', {
                 }
             }
         },
-        async get_users_total() {
+        async get_users_total(search = "") {
             this.errorMessage = "";
             try {
                 const response = await axios.get(backend_url + '/users_total', {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
+                    params: {
+                      search: search
                     },
                 });
 
@@ -116,10 +122,64 @@ export const useDataStore = defineStore('data', {
                 }
             }
         },
+        async delete_group(id) {
+          this.errorCode = 0;
+          this.errorMessage = "";
+          try {
+            const response = await axios.delete(backend_url + '/group/' + id, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
+              }
+            );
+            this.errorCode = response.data.code;
+            this.errorMessage = response.data.error;
+          } catch (error) {
+              if (error.response) {
+                  this.errorCode = 11;
+                  this.errorMessage = error.response.data.message;
+                  console.log(error);
+              } else if (error.request) {
+                  this.errorCode = 12;
+                  this.errorMessage = error.message;
+                  console.log(error);
+              } else {
+                  this.errorCode = 13;
+                  console.log(error);
+              }
+            }
+        },
         async create_group(formData) {
             this.errorMessage = "";
             try {
                 const response = await axios.post(backend_url + '/group', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    },
+                });
+                this.errorCode = response.data.code;
+                this.errorMessage = response.data.message;
+            } catch (error) {
+                if (error.response) {
+                    this.errorCode = 11;
+                    this.errorMessage = error.response.data.message;
+                    console.log(error);
+                } else if (error.request) {
+                    this.errorCode = 12;
+                    this.errorMessage = error.message;
+                    console.log(error);
+                } else {
+                    this.errorCode = 13;
+                    console.log(error);
+                }
+            }
+        },
+        async update_group(formData, id) {
+            this.errorMessage = "";
+            try {
+                const response = await axios.post(backend_url + '/group/' + id, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: 'Bearer ' + localStorage.getItem('token')

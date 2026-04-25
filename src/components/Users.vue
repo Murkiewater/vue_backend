@@ -12,6 +12,10 @@
     :leading="true"
     :first="offset"
   >
+    <template #header>
+      <InputText v-model="search" type="text" id="search" required placeholder="Название" class="m-2 sm:w-auto"/>
+      <Button type="button" @click="onPushSearchButton()" icon="pi pi-search" class="ml-4" label="Найти"/>
+    </template>
     <Column field="id" header="№"/>
     <Column field="full_name" header="Пользователи"/>
     <Column header="Изображение">
@@ -30,17 +34,20 @@
 <script>
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
 import {useDataStore} from '@/stores/dataStore';
 
 export default {
   name: "Users",
-  components: {DataTable, Column},
+  components: { DataTable, Column, Button, InputText },
   data() {
     return {
       dataStore: useDataStore(),
       perpage: 5,
       offset: 0,
       page: 0,
+      search: "",
       defaultImage: 'https://storage.yandexcloud.net/nifty-db/groups_pictures/nifty-default-user.png'
     }
   },
@@ -63,6 +70,10 @@ export default {
       this.offset = event.first;
       this.perpage = event.rows;
       this.dataStore.get_users(this.offset / this.perpage, this.perpage);
+    },
+    onPushSearchButton(event) {
+      this.dataStore.get_users_total(this.search);
+      this.dataStore.get_users(undefined, undefined, this.search);
     }
   }
 }
