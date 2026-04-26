@@ -15,7 +15,7 @@
             <span class="pi pi-upload mx-3"></span>Выбрать изображение
           </label>
           <input type="file" hidden id="file" name="file"
-            v-on:change="changeCaption" required accept="image/*">
+            v-on:change="changeCaption" :required="!isEdit" accept="image/*">
         </div>
 
         <div class="flex flex-col mt-6">
